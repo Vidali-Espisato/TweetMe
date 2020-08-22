@@ -1,3 +1,17 @@
 {% extends 'base.html' %} {% block content %}
-<h2>Fuck off</h2>
+<script>
+  const xhr = new XMLHttpRequest();
+  const method = "GET";
+  const url = "/tweets";
+  const responseType = "json";
+
+  xhr.responseType = responseType;
+  xhr.open(method, url);
+  xhr.onload = () => {
+    const serverResponse = xhr.response;
+    var responseList = serverResponse.response;
+    console.log(responseList, xhr.response.isUser);
+  };
+  xhr.send();
+</script>
 {% endblock %}
