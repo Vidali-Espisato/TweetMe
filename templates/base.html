@@ -17,11 +17,22 @@
     />
 
     <title>{% block title %}{% endblock %}</title>
+    <style>
+      .bg-new-success {
+        background-color: #1f4725;
+      }
+      .container {
+        min-height: 80vh !important;
+      }
+    </style>
   </head>
 
-  <body>
-    {% block content %}{% endblock %}
-
+  <body class="bg-light">
+    {% include 'components/navbar.html' %}
+    <div class="container bg-white p-5 rounded-lg">
+      {% block content %}{% endblock %}
+    </div>
+    {% include 'components/footer.html' %}
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script

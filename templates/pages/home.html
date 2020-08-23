@@ -1,5 +1,10 @@
 {% extends 'base.html' %} {% block content %}
-<div id="tweets">
+<div class="row text-center my-4">
+  <div class="col">
+    <h1>Welcome - TweetMe</h1>
+  </div>
+</div>
+<div id="tweets" class="row mx-5">
   Loading...
 </div>
 
@@ -15,15 +20,17 @@
   };
 
   const likeButton = (tweet) => `
-    <btn class="btn btn-primary" onclick="hitLike(${tweet.id}, ${tweet.likes})">
+    <btn class="btn btn-success float-right" onclick="hitLike(${tweet.id}, ${tweet.likes})">
       ${tweet.likes} Likes
     </btn>
   `;
 
   const getFormattedText = (tweet) => {
     formattedText = `
-            <div class="mb-4 tweet" id="tweet-${tweet.id}">
-               <p> ${tweet.content}</p>
+            <div class="tweet col-10 col-md-5 py-3 mx-auto my-2 border rounded-lg" id="tweet-${
+              tweet.id
+            }">
+               <span> ${tweet.content}</span>
                ${likeButton(tweet)}
             </div>
         `;
