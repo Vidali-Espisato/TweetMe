@@ -10,10 +10,21 @@
   const url = "/tweets";
   const responseType = "json";
 
-  let getFormattedText = (resp) => {
+  const hitLike = (tweetId, likesCount) => {
+    console.log(tweetId, likesCount);
+  };
+
+  const likeButton = (tweet) => `
+    <btn class="btn btn-primary" onclick="hitLike(${tweet.id}, ${tweet.likes})">
+      ${tweet.likes} Likes
+    </btn>
+  `;
+
+  const getFormattedText = (tweet) => {
     formattedText = `
-            <div class="mb-4 tweet" id="tweet-${resp.id}">
-               <p> ${resp.content}</p>
+            <div class="mb-4 tweet" id="tweet-${tweet.id}">
+               <p> ${tweet.content}</p>
+               ${likeButton(tweet)}
             </div>
         `;
     return formattedText;
