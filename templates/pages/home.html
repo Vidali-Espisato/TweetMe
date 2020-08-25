@@ -4,23 +4,51 @@
     <h1>Welcome - TweetMe</h1>
   </div>
 </div>
+<div class="row my-5">
+  <div class="col-md-10 mx-auto col-12">
+    <form action="create-tweet/" method="POST" class="form">
+      {% csrf_token %}
+      <input type="hidden" name="next" value="/" />
+      <textarea
+        name="content"
+        placeholder="Type Here..."
+        class="form-control"
+      ></textarea>
+      <button type="submit" class="btn btn-success mt-2 float-right">
+        Tweet
+      </button>
+    </form>
+  </div>
+</div>
 <div id="tweets" class="row mx-5">
   Loading...
 </div>
 
 <script>
-  const tweets = document.getElementById("tweets");
+  const tweetsElement = document.getElementById("tweets");
   const xhr = new XMLHttpRequest();
   const method = "GET";
   const url = "/tweets";
   const responseType = "json";
+  xhr.responseType = responseType;
+  xhr.open(method, url);
+  xhr.onload = () => {
+    const serverResponse = xhr.response;
+    let responseList = serverResponse.response;
+    var tweetsText = "";
+    responseList.forEach((response) => {
+      tweetsText += getFormattedText(response);
+    });
+    tweetsElement.innerHTML = tweetsText;
+  };
+  xhr.send();
 
   const hitLike = (tweetId, likesCount) => {
     console.log(tweetId, likesCount);
   };
 
   const likeButton = (tweet) => `
-    <btn class="btn btn-success float-right" onclick="hitLike(${tweet.id}, ${tweet.likes})">
+    <btn class="btn btn-primary float-right" onclick="hitLike(${tweet.id}, ${tweet.likes})">
       ${tweet.likes} Likes
     </btn>
   `;
@@ -36,18 +64,5 @@
         `;
     return formattedText;
   };
-
-  xhr.responseType = responseType;
-  xhr.open(method, url);
-  xhr.onload = () => {
-    const serverResponse = xhr.response;
-    let responseList = serverResponse.response;
-    var tweetsText = "";
-    responseList.forEach((response) => {
-      tweetsText += getFormattedText(response);
-    });
-    tweets.innerHTML = tweetsText;
-  };
-  xhr.send();
 </script>
 {% endblock %}
