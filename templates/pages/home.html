@@ -26,22 +26,24 @@
 
 <script>
   const tweetsElement = document.getElementById("tweets");
-  const xhr = new XMLHttpRequest();
-  const method = "GET";
-  const url = "/tweets";
-  const responseType = "json";
-  xhr.responseType = responseType;
-  xhr.open(method, url);
-  xhr.onload = () => {
-    const serverResponse = xhr.response;
-    let responseList = serverResponse.response;
-    var tweetsText = "";
-    responseList.forEach((response) => {
-      tweetsText += getFormattedText(response);
-    });
-    tweetsElement.innerHTML = tweetsText;
+  const loadTweets = (tweetsElement) => {
+    const xhr = new XMLHttpRequest();
+    const method = "GET";
+    const url = "/tweets";
+    const responseType = "json";
+    xhr.responseType = responseType;
+    xhr.open(method, url);
+    xhr.onload = () => {
+      const serverResponse = xhr.response;
+      let responseList = serverResponse.response;
+      var tweetsText = "";
+      responseList.forEach((response) => {
+        tweetsText += getFormattedText(response);
+      });
+      tweetsElement.innerHTML = tweetsText;
+    };
+    xhr.send();
   };
-  xhr.send();
 
   const hitLike = (tweetId, likesCount) => {
     console.log(tweetId, likesCount);
@@ -64,5 +66,6 @@
         `;
     return formattedText;
   };
+  loadTweets(tweetsElement);
 </script>
 {% endblock %}
