@@ -13,6 +13,7 @@
         name="content"
         placeholder="Type Here..."
         class="form-control"
+        required="required"
       ></textarea>
       <button type="submit" class="btn btn-success mt-2 float-right">
         Tweet
@@ -35,16 +36,29 @@
     const url = myForm.getAttribute("action");
     const method = myForm.getAttribute("method");
     const xhr = new XMLHttpRequest();
+    xhr.responseType = 'json';
     xhr.open(method, url);
     xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest");
     xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
     xhr.onload = () => {
       const serverResponse = xhr.response;
+      // const parsedResponse = JSON.parse(serverResponse)
       const tweetsElement = document.getElementById("tweets");
+      // console.log(serverResponse, xhr.status);
+      if (xhr.status === 201) {
+        const formattedText = getFormattedText(serverResponse);
+        // const ogHTML = tweetsElement.innerHTML;
+        tweetsElement.innerHTML += formattedText; // + ogHTML;
+      } else if (xhr.status === 400) {
+        console.log(serverResponse);
+      } else if (xhr.status === 500) {
+        alert("It's not you. It's us.\n Try again!")
+      }
       loadTweets(tweetsElement);
-      console.log(serverResponse, xhr.status);
-      const textArea = myForm.querySelector("#create_tweet_form textarea");
-      textArea.value = "";
+      myForm.reset();
+    }
+    xhr.onerror = () => {
+      alert("An error occurred! Please, try again.")
     }
     xhr.send(myFormData);
   })
