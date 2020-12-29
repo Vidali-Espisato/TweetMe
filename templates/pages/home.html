@@ -51,6 +51,9 @@
         tweetsElement.innerHTML += formattedText; // + ogHTML;
       } else if (xhr.status === 400) {
         console.log(serverResponse);
+      } else if (xhr.status === 401) {
+        alert("You need to login!");
+        window.location = "/login";
       } else if (xhr.status === 500) {
         alert("It's not you. It's us.\n Try again!")
       }
