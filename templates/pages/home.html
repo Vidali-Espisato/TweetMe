@@ -51,7 +51,7 @@
         tweetsElement.innerHTML += formattedText; // + ogHTML;
       } else if (xhr.status === 400) {
         console.log(serverResponse);
-      } else if (xhr.status === 401) {
+      } else if (xhr.status === 403) {
         alert("You need to login!");
         window.location = "/login";
       } else if (xhr.status === 500) {
@@ -75,7 +75,8 @@
     xhr.open(method, url);
     xhr.onload = () => {
       const serverResponse = xhr.response;
-      let responseList = serverResponse.response;
+      // let responseList = serverResponse.response; // for just django views
+      let responseList = serverResponse;   // for api views
       var tweetsText = "";
       responseList.forEach((response) => {
         tweetsText += getFormattedText(response);
