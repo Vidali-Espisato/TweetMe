@@ -42,6 +42,18 @@ def tweet_detail_view(request, tweet_id, *args, **kwargs):
     serializer = TweetSerializer(qs.first())
     return Response(serializer.data)
 
+@api_view(['GET', 'DELETE', 'POST'])
+def tweet_delete_view(request, tweet_id, *args, **kwargs):
+    qs = Tweet.objects.filter(id=tweet_id)
+    if not qs.exists():
+        return Response({}, status=404)
+    qs = qs.filter(user=request.user)
+    if not qs.exists():
+        return Response({'message': "You are not authorized to delete this tweet"}, status=401)
+    obj = qs.first()
+    obj.delete()
+    return Response({'message': f"Tweet {tweet_id} deleted succesfully."})
+
 
 # def tweet_create_view(request, *args, **kwargs):
 #     serializer = TweetSerializer(data=request.POST or None)
