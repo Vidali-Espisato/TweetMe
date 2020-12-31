@@ -6,7 +6,7 @@
 </div>
 <div class="row my-5">
   <div class="col-md-10 mx-auto col-12">
-    <form action="create-tweet/" id="create_tweet_form" method="POST" class="form">
+    <form action="/api/v1/tweets/create/" id="create_tweet_form" method="POST" class="form">
       {% csrf_token %}
       <input type="hidden" name="next" value="/" />
       <textarea
@@ -86,7 +86,7 @@
   const loadTweets = (tweetsElement) => {
     const xhr = new XMLHttpRequest();
     const method = "GET";
-    const url = "/tweets";
+    const url = "/api/v1/tweets";
     const responseType = "json";
     xhr.responseType = responseType;
     xhr.open(method, url);
@@ -104,7 +104,7 @@
   };
 
   const handleTweetActions = (tweetId, likesCount, action) => {
-    const url = "/api/v1/tweet/action";
+    const url = "/api/v1/tweets/action/";
     const method= "POST";
     const data = JSON.stringify({
       'pk': tweetId,
