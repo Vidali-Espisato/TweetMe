@@ -5,20 +5,26 @@ from django.db import models
 # Create your models here.
 User = settings.AUTH_USER_MODEL
 
+class TweetLike(models.Model):
+    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    tweet = models.ForeignKey("Tweet", on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
 class Tweet(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     content = models.CharField(max_length=240, blank=True, null=True)
+    likes = models.ManyToManyField(User, related_name="tweet_user", blank=True, through=TweetLike)
     image = models.FileField(upload_to="images/", blank=True, null=True)
-
-    class Meta:
-        ordering = ['-pk']
+    timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.content
 
-    def serialize(self):
-        return {
-            'id': self.pk,
-            'content': self.content,
-            'likes': random.randint(0, 299)
-        }
+    class Meta:
+        ordering = ['-pk']
+    # def serialize(self):
+    #     return {
+    #         'id': self.pk,
+    #         'content': self.content,
+    #         'likes': random.randint(0, 299)
+    #     }

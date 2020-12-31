@@ -38,8 +38,8 @@
     const xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
     xhr.open(method, url);
-    xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest");
-    xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+    xhr.setRequestHeader('HTTP_X_REQUESTED_WITH', "XMLHttpRequest");
+    xhr.setRequestHeader('X-Requested-With', "XMLHttpRequest");
     xhr.onload = () => {
       const serverResponse = xhr.response;
       // const parsedResponse = JSON.parse(serverResponse)
@@ -66,6 +66,23 @@
     xhr.send(myFormData);
   })
 
+  const getCookie = (name) => {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+
+
   const loadTweets = (tweetsElement) => {
     const xhr = new XMLHttpRequest();
     const method = "GET";
@@ -86,13 +103,40 @@
     xhr.send();
   };
 
-  const hitLike = (tweetId, likesCount) => {
-    console.log(tweetId, likesCount);
+  const handleTweetActions = (tweetId, likesCount, action) => {
+    const url = "/api/v1/tweet/action";
+    const method= "POST";
+    const data = JSON.stringify({
+      'pk': tweetId,
+      'action': action,
+    });
+    const csrf_token = getCookie('csrftoken');
+    // const csrf_token = Cookies.get('csrftoken');
+    const xhr = new XMLHttpRequest();
+    xhr.open(method, url);
+    xhr.setRequestHeader('Content-Type', "application/json");
+    xhr.setRequestHeader('HTTP_X_REQUESTED_WITH', "XMLHttpRequest");
+    xhr.setRequestHeader('X-Requested-With', "XMLHttpRequest");
+    xhr.setRequestHeader('X-CSRFToken', csrf_token);
+    xhr.onload = () => {
+      loadTweets(tweetsElement);
+    }
+    xhr.send(data);
   };
 
-  const likeButton = (tweet) => `
-    <btn class="btn btn-primary float-right" onclick="hitLike(${tweet.id}, ${tweet.likes})">
+  const LikeButton = (tweet) => `
+    <btn class="btn btn-primary float-right" onclick="handleTweetActions(${tweet.id}, ${tweet.likes}, 'like')">
       ${tweet.likes} Likes
+    </btn>
+  `;
+  const UnlikeButton = (tweet) => `
+    <btn class="btn btn-outline-primary float-right" onclick="handleTweetActions(${tweet.id}, ${tweet.likes}, 'unlike')">
+      Unlike
+    </btn>
+  `;
+  const RetweetButton = (tweet) => `
+    <btn class="btn btn-success float-right" onclick="handleTweetActions(${tweet.id}, ${tweet.likes}, 'retweet')">
+      Retweet
     </btn>
   `;
 
@@ -102,7 +146,9 @@
               tweet.id
             }">
                <span> ${tweet.content}</span>
-               ${likeButton(tweet)}
+               ${LikeButton(tweet)}
+               ${UnlikeButton(tweet)}
+               ${RetweetButton(tweet)}
             </div>
         `;
     return formattedText;
