@@ -8,7 +8,6 @@ export function TweetActions(props) {
     const display = action.type === "like" ? `${ likes } Likes` : action.type
 
     const handleClick = event => {
-        console.log(tweet.likes ? true : false)
         if (action.type === "like") {
             if (userLike) {
                 setLikes(likes - 1)

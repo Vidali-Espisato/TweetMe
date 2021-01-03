@@ -1,2 +1,2 @@
 import { TweetsComponent } from "./components"
-export { TweetsComponent }
+export default TweetsComponent

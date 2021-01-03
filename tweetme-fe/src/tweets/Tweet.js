@@ -8,7 +8,8 @@ export function Tweet(props) {
         <div className={className}>
             <p>{tweet.id}: {tweet.content}</p>
             {
-                ["like", "unlike", "retweet", "delete"].map(t => <TweetActions tweet={ tweet } action={{ type: t }}/>)
+                ["like", "unlike", "retweet", "delete"]
+                    .map((t, i) => <TweetActions key={i} tweet={ tweet } action={{ type: t }}/>)
             }
         </div>
     )

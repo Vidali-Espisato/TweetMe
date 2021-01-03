@@ -1,13 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { TweetList } from "./TweetList"
 
 export function TweetsComponent(props) {
     const textAreaRef = React.createRef()
-  
+    const [newTweets, setNewTweets] = useState([])
+
     const handleSubmit = event => {
         event.preventDefault()
         const newVal = textAreaRef.current.value
-        console.log(newVal)
+        let tempTweet = [...newTweets]
+        tempTweet.unshift({
+            content: newVal,
+            id: 123,
+            likes: 455
+        })
+        setNewTweets(tempTweet)
         textAreaRef.current.value = ''
     }
 
@@ -19,7 +26,7 @@ export function TweetsComponent(props) {
                     <button type="submit">Tweet</button>
                 </form>
             </div>
-            <TweetList/>
+            <TweetList newTweets={ newTweets }/>
         </div>
     )
 }

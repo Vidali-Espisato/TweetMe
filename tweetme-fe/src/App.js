@@ -1,5 +1,5 @@
 import './App.css'
-import { TweetsComponent } from "./tweets"
+import TweetsComponent from "./tweets"
 
 function App() {
   return (
