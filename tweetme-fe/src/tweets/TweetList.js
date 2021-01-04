@@ -8,27 +8,28 @@ export function TweetList(props) {
     const newTweets = props.newTweets
 
     useEffect(() => {
-      const finalTweets = [...newTweets].concat(tweetsInit)
-      if (finalTweets.length !== tweetsInit.length) {
-        setTweets(finalTweets)
-      }
-    }, [newTweets, tweetsInit, tweets])
+        const finalTweets = [...newTweets, ...tweetsInit]
+        if (finalTweets.length !== tweetsInit.length) {
+            setTweets(finalTweets)
+        }
+    }, [newTweets, tweetsInit])
 
     useEffect(() => {
         const myCallback = (response, status) => {
-          if (status === 200) {
+            if (status === 200) {
             setTweetsInit(response)
-          } else {
+            setTweets(response)
+            } else {
             alert(response.message)
-          }
+            }
         }
         loadTweets(myCallback)
-      }, [tweetsInit])
+    }, [])
     
     return (
         <div>
             {
-              tweets.map((tweet, index) => <Tweet key={index} tweet={tweet} className="my-10 mx-auto bg-light text-success shadow-lg text-center" />)
+                tweets.map((tweet, index) => <Tweet key={index} tweet={tweet} className="my-10 mx-auto bg-light text-success shadow-lg text-center" />)
             }
         </div>
     )

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { TweetList } from "./TweetList"
 
 export function TweetsComponent(props) {
-    const textAreaRef = React.createRef()
+	const textAreaRef = React.createRef()
     const [newTweets, setNewTweets] = useState([])
 
     const handleSubmit = event => {

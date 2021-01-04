@@ -1,12 +1,13 @@
-import './App.css'
-import TweetsComponent from "./tweets"
+import "./App.css"
+import TweetsComponent from './tweets'
 
 function App() {
-  return (
-    <div className="App">
-      <TweetsComponent/>
-    </div>
-  );
+    console.log("I'm in app!!!")
+    return (
+        <div className="App">
+            <TweetsComponent/>
+        </div>
+    );
 }
 
 export default App

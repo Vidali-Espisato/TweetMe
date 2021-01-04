@@ -1,2 +1,2 @@
-import { TweetsComponent } from "./components"
+import { TweetsComponent } from "./TweetsComponent"
 export default TweetsComponent
