@@ -1,10 +1,8 @@
-
-const loadTweets = callback => {
+const lookup = (method, endpoint, callback, data) => {
+    const jsonData = data ? JSON.stringify(data) : null
     const xhr = new XMLHttpRequest();
-    const method = "GET";
-    const url = "http://127.0.0.1:8000/api/v1/tweets/";
-    const responseType = "json";
-    xhr.responseType = responseType;
+    const url = `http://127.0.0.1:8000/api/v1${endpoint}`;
+    xhr.responseType = "json";
     xhr.open(method, url);
     xhr.onload = () => {
         callback(xhr.response, xhr.status);
@@ -13,7 +11,11 @@ const loadTweets = callback => {
         console.log(err);
         callback({ message: "Somehting is wrong!" }, 400);
     };
-    xhr.send();
+    xhr.send(jsonData);
+}
+
+const loadTweets = callback => {
+    lookup("GET", "/tweets/", callback)   
 }
 
 export default loadTweets
