@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Tweet } from "./Tweet"
-import loadTweets from "./loadTweets"
+import { apiTweetsList } from "./lookup"
 
 export function TweetList(props) {
     const [tweetsInit, setTweetsInit] = useState([])
@@ -15,15 +15,15 @@ export function TweetList(props) {
     }, [newTweets, tweetsInit])
 
     useEffect(() => {
-        const myCallback = (response, status) => {
+        const handleBackendLookupRequest = (response, status) => {
             if (status === 200) {
-            setTweetsInit(response)
-            setTweets(response)
+                setTweetsInit(response)
+                setTweets(response)
             } else {
-            alert(response.message)
+                alert(response.message)
             }
         }
-        loadTweets(myCallback)
+        apiTweetsList(handleBackendLookupRequest)
     }, [])
     
     return (
