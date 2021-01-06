@@ -128,24 +128,36 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = os.path.join("static-root")
 
+# CORS_ORIGIN_WHITELIST = [
+#     "http://localhost:3000/",
+#     "http://127.0.0.1:3000/",
+# ]
 
-
-
+# CORS_ALLOWED_ORIGINS = [
+#     "http://127.0.0.1:3000/",
+#     "http://localhost:3000/",
+# ]
 CORS_ORIGIN_ALLOW_ALL = True
 
 DEFAULT_RENDERER_CLASSES = [
-        'rest_framework.renderers.JSONRenderer'
+    'rest_framework.renderers.JSONRenderer'
+]
+DEFAULT_AUTHENTICATION_CLASSES = [
+    'rest_framework.authentication.SessionAuthentication'
 ]
 
 if DEBUG:
     DEFAULT_RENDERER_CLASSES += [
         'rest_framework.renderers.BrowsableAPIRenderer'
     ]
+    DEFAULT_AUTHENTICATION_CLASSES += [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        'tweetme.rest_api.dev.DevAuthentication'
+    ]
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication'
-    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': DEFAULT_AUTHENTICATION_CLASSES,
     'DEFAULT_RENDERER_CLASSES': DEFAULT_RENDERER_CLASSES
 }
